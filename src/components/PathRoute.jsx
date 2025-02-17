@@ -6,6 +6,10 @@
 
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {useState} from "react";
+import Home from "./Home";
+import Login from "./Login";
+import ProtectedRoute from "./ProtectedRoute";
+import CompanyPage from "../pages/CompanyPage";
 
 function PathRoute() {
     const [user, setUser] = useState(null);
@@ -18,8 +22,15 @@ function PathRoute() {
             <Routes>
                 {/* 0. 관리자, 회사, 유저에 관계 없이 전체 접근 가능 Components */}
                 <Route path="/" element={<Home/>}/>
+                <Route path="/login" element={<Login setUser={setUser}/>}/>
                 {/* 1. 관리자만 접근 가능 Components */}
                 {/* 2.   회사만 접근 가능 Components */}
+                <Route path="/company" element={
+                    <ProtectedRoute allowedRoles={[2]}>
+                        <CompanyPage user={user}/>
+                    </ProtectedRoute>
+                }>
+                </Route>
                 {/* 3.   유저만 접근 가능 Components */}
             </Routes>
         </BrowserRouter>
